@@ -4,3 +4,6 @@
 [submodule "root_repo/hackyeah_orcestrator_service"]
 	path = root_repo/hackyeah_orcestrator_service
 	url = https://github.com/cvltcvltcvlt/hackyeah_orcestrator_service.git
+[submodule "root_repo/hackyeah-frontend"]
+	path = root_repo/hackyeah-frontend
+	url = https://github.com/cvltcvltcvlt/hackyeah-frontend.git
