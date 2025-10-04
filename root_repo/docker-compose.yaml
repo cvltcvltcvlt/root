@@ -1,0 +1,144 @@
+version: "3.9"
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.7.5
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - internal
+
+  kafka:
+    image: confluentinc/cp-kafka:7.7.5
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://100.74.106.106:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    ports:
+      - "100.74.106.106:9092:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - internal
+
+  cpp-app:
+    build: ./hackyeah-cpp
+    stop_signal: SIGTERM
+    stop_grace_period: 2s
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      KAFKA_BROKERS: "kafka:29092"
+      KAFKA_GROUP_ID: "hackyeah-cpp"
+      KAFKA_TOPIC: "vehicle-events"
+    depends_on:
+      - redis
+      - kafka
+    ports:
+      - "100.74.106.106:8081:8080"
+    networks:
+      - internal
+
+  frontend:
+    build: ./hackyeah-frontend
+    ports:
+      - "100.74.106.106:3000:3000"
+    networks:
+      - internal
+
+  orcestrator_service:
+    build: ./hackyeah_orcestrator_service
+    ports:
+      -  "100.74.106.106:8115:8115"
+    networks:
+      -  internal
+
+  neo4j:
+    image: neo4j:5.12
+    container_name: neo4j
+    environment:
+      NEO4J_AUTH: "neo4j/secret_password"
+    ports:
+      - "100.74.106.106:7474:7474"
+      - "100.74.106.106:7687:7687"
+    volumes:
+      - neo4j-data:/data
+    networks:
+      - internal
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    ports:
+      - "100.74.106.106:6379:6379"
+    networks:
+      - internal
+
+
+volumes:
+  neo4j-data:
+
+networks:
+  internal: {}
+
+root@debian-4gb-nbg1-1:/home/hackathon# ^C
+root@debian-4gb-nbg1-1:/home/hackathon# ^C
+root@debian-4gb-nbg1-1:/home/hackathon# ^C
+root@debian-4gb-nbg1-1:/home/hackathon# ^C
+root@debian-4gb-nbg1-1:/home/hackathon# ^C
+root@debian-4gb-nbg1-1:/home/hackathon# ^C
+root@debian-4gb-nbg1-1:/home/hackathon# ^C
+root@debian-4gb-nbg1-1:/home/hackathon# ^C
+root@debian-4gb-nbg1-1:/home/hackathon#  ^[[200~version: "3.9"
+-bash: $'\E[200~version:': command not found
+    depends_on:
+      - redis
+      - kafka
+    ports:
+      - "100.74.106.106:8081:8080"
+    networks:
+      - internal
+
+  frontend:
+    build: ./hackyeah-frontend
+    ports:
+      - "100.74.106.106:3000:3000"
+    networks:
+      - internal
+
+  orcestrator_service:
+    build: ./hackyeah_orcestrator_service
+    ports:
+      -  "100.74.106.106:8115:8115"
+    networks:
+      -  internal
+
+  neo4j:
+    image: neo4j:5.12
+    container_name: neo4j
+    environment:
+      NEO4J_AUTH: "neo4j/secret_password"
+    ports:
+      - "100.74.106.106:7474:7474"
+      - "100.74.106.106:7687:7687"
+    volumes:
+      - neo4j-data:/data
+    networks:
+      - internal
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    ports:
+      - "100.74.106.106:6379:6379"
+    networks:
+      - internal
