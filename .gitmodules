@@ -7,3 +7,9 @@
 [submodule "root_repo/hackyeah-frontend"]
 	path = root_repo/hackyeah-frontend
 	url = https://github.com/cvltcvltcvlt/hackyeah-frontend.git
+[submodule "root_repo/hackyean-cpp"]
+	path = root_repo/hackyean-cpp
+	url = https://github.com/AleXoium/hackyean-cpp.git
+[submodule "root_repo/hackyeah_backend"]
+	path = root_repo/hackyeah_backend
+	url = https://github.com/Tim-ns/hackyeah_backend
