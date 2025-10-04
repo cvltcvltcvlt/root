@@ -49,7 +49,9 @@ services:
       - internal
 
   frontend:
-    build: ./hackyeah-frontend
+    build:
+      context: ./hackyeah-frontend
+      dockerfile: Dockerfile
     ports:
       - "100.74.106.106:3000:3000"
     networks:
@@ -61,6 +63,15 @@ services:
       -  "100.74.106.106:8115:8115"
     networks:
       -  internal
+
+  orcestrator_worker:
+    build:
+      context: ./hackyeah_orcestrator_service
+      dockerfile: worker.Dockerfile
+    ports:
+      - "100.74.106.106:8005:8005"
+    networks:
+      - internal
 
   neo4j:
     image: neo4j:5.12
@@ -89,56 +100,3 @@ volumes:
 
 networks:
   internal: {}
-
-root@debian-4gb-nbg1-1:/home/hackathon# ^C
-root@debian-4gb-nbg1-1:/home/hackathon# ^C
-root@debian-4gb-nbg1-1:/home/hackathon# ^C
-root@debian-4gb-nbg1-1:/home/hackathon# ^C
-root@debian-4gb-nbg1-1:/home/hackathon# ^C
-root@debian-4gb-nbg1-1:/home/hackathon# ^C
-root@debian-4gb-nbg1-1:/home/hackathon# ^C
-root@debian-4gb-nbg1-1:/home/hackathon# ^C
-root@debian-4gb-nbg1-1:/home/hackathon#  ^[[200~version: "3.9"
--bash: $'\E[200~version:': command not found
-    depends_on:
-      - redis
-      - kafka
-    ports:
-      - "100.74.106.106:8081:8080"
-    networks:
-      - internal
-
-  frontend:
-    build: ./hackyeah-frontend
-    ports:
-      - "100.74.106.106:3000:3000"
-    networks:
-      - internal
-
-  orcestrator_service:
-    build: ./hackyeah_orcestrator_service
-    ports:
-      -  "100.74.106.106:8115:8115"
-    networks:
-      -  internal
-
-  neo4j:
-    image: neo4j:5.12
-    container_name: neo4j
-    environment:
-      NEO4J_AUTH: "neo4j/secret_password"
-    ports:
-      - "100.74.106.106:7474:7474"
-      - "100.74.106.106:7687:7687"
-    volumes:
-      - neo4j-data:/data
-    networks:
-      - internal
-
-  redis:
-    image: redis:7.0
-    container_name: redis
-    ports:
-      - "100.74.106.106:6379:6379"
-    networks:
-      - internal
